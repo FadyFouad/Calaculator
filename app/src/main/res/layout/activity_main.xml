@@ -229,7 +229,7 @@
             app:layout_constraintTop_toBottomOf="@+id/num_three"/>
 
     <Button
-            android:id="@+id/num_c"
+            android:id="@+id/num_negative"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="52dp"
