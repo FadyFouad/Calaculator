@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         result = findViewById(R.id.results)
         inNum = findViewById(R.id.newTextET)
 
-        //TODO INIT BUTTONS
+        //TODO INIT BUTTONS Or Use kotlinx.android.synthetic.main.activity_main.
         val in0: Button = findViewById(R.id.num_zero)
         val in1: Button = findViewById(R.id.num_one)
         val in2: Button = findViewById(R.id.num_two)
@@ -62,9 +63,10 @@ class MainActivity : AppCompatActivity() {
 
         val operationLis = View.OnClickListener { v ->
             val op = (v as Button).text.toString()
-            val value = inNum.text.toString()
-            if (value.isNotEmpty()) {
+            val value = inNum.text.toString().toDouble()
+            if (value!=null) {//TODO isNotEmpty()
                 performOperation(value, op)
+                Toast.makeText(this,"->$value",Toast.LENGTH_LONG).show()
             }
             pendingOper = op
             viewOperation.text = pendingOper
@@ -77,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         sub.setOnClickListener(operationLis)
         equal.setOnClickListener(operationLis)
     }
-    private fun performOperation(value: String, operation: String) {
+    private fun performOperation(value: Double, operation: String) {
         if (oper1 == null) {
             oper1 = value.toDouble()
         } else {
