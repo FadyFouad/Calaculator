@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,6 +41,8 @@ class MainActivity : AppCompatActivity() {
         val plus: Button = findViewById(R.id.num_add)
         val sub: Button = findViewById(R.id.num_sub)
         val equal: Button = findViewById(R.id.num_eq)
+        val negative: Button = findViewById(R.id.num_negative)
+        val del: Button = findViewById(R.id.num_del)
 
         val listner = View.OnClickListener { v ->
             val b = v as Button
@@ -63,11 +64,15 @@ class MainActivity : AppCompatActivity() {
 
         val operationLis = View.OnClickListener { v ->
             val op = (v as Button).text.toString()
-            val value = inNum.text.toString().toDouble()
-            if (value!=null) {//TODO isNotEmpty()
+//            if (value!=null) {//TODO isNotEmpty()
+            try {
+                val value = inNum.text.toString().toDouble()
                 performOperation(value, op)
-                Toast.makeText(this,"->$value",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "->$value", Toast.LENGTH_LONG).show()
+            } catch (e: Exception) {
+
             }
+//            }
             pendingOper = op
             viewOperation.text = pendingOper
         }
@@ -78,7 +83,33 @@ class MainActivity : AppCompatActivity() {
         plus.setOnClickListener(operationLis)
         sub.setOnClickListener(operationLis)
         equal.setOnClickListener(operationLis)
+
+        negative.setOnClickListener({ v ->
+            val value = inNum.text.toString()
+            if (value.isEmpty()) {
+                inNum.setText("-")
+            } else {
+                try {
+                    var doub = value.toDouble()
+                    doub *= 1
+                    inNum.setText(doub.toString())
+                } catch (e: Exception) {
+
+                }
+            }
+
+        })
+
+        del.setOnClickListener({ v ->
+            val value = inNum.text.toString()
+            if (value.isNotEmpty()) {
+//                value.substring(0, value.length - 1)
+                inNum.setText(value.dropLast(1))
+            }
+        })
     }
+
+
     private fun performOperation(value: Double, operation: String) {
         if (oper1 == null) {
             oper1 = value.toDouble()
