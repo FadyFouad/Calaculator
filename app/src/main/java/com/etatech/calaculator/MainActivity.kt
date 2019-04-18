@@ -6,20 +6,23 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private var oper1: Double? = null
     private var oper2: Double = 0.0
     private var pendingOper: String = "="
-
+    val viewOperation by lazy { findViewById<TextView>(R.id.operat) }
+    private lateinit var inNum: EditText
+    private lateinit var result: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val result: EditText = findViewById(R.id.numET)
-        val newResult: EditText = findViewById(R.id.newTextET)
-        val viewResults by lazy { findViewById<TextView>(R.id.resultsTV) }
+        result = findViewById(R.id.results)
+        inNum = findViewById(R.id.newTextET)
+
         //TODO INIT BUTTONS
         val in0: Button = findViewById(R.id.num_zero)
         val in1: Button = findViewById(R.id.num_one)
@@ -37,10 +40,11 @@ class MainActivity : AppCompatActivity() {
         val div: Button = findViewById(R.id.num_divide)
         val plus: Button = findViewById(R.id.num_add)
         val sub: Button = findViewById(R.id.num_sub)
+        val equal: Button = findViewById(R.id.num_eq)
 
         val listner = View.OnClickListener { v ->
             val b = v as Button
-            newResult.append(b.text)
+            inNum.append(b.text)
         }
 
         in0.setOnClickListener(listner)
@@ -55,5 +59,47 @@ class MainActivity : AppCompatActivity() {
         in9.setOnClickListener(listner)
         dot.setOnClickListener(listner)
 
+
+        val operationLis = View.OnClickListener { v ->
+            val op = (v as Button).text.toString()
+            val value = inNum.text.toString()
+            if (value.isNotEmpty()) {
+                performOperation(value, op)
+            }
+            pendingOper = op
+            viewOperation.text = pendingOper
+        }
+
+
+        mul.setOnClickListener(operationLis)
+        div.setOnClickListener(operationLis)
+        plus.setOnClickListener(operationLis)
+        sub.setOnClickListener(operationLis)
+        equal.setOnClickListener(operationLis)
+    }
+    private fun performOperation(value: String, operation: String) {
+        if (oper1 == null) {
+            oper1 = value.toDouble()
+        } else {
+            oper2 = value.toDouble()
+
+            if (pendingOper == "=") {
+                pendingOper = operation
+            }
+
+            when (pendingOper) {
+                "=" -> oper1 = oper2
+                "/" -> if (oper2 == 0.0) {
+                    oper1 = Double.NaN   // handle attempt to divide by zero
+                } else {
+                    oper1 = oper1!! / oper2
+                }
+                "*" -> oper1 = oper1!! * oper2
+                "-" -> oper1 = oper1!! - oper2
+                "+" -> oper1 = oper1!! + oper2
+            }
+        }
+        result.setText(oper1.toString())
+        inNum.setText("")
     }
 }

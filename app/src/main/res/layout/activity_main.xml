@@ -7,7 +7,7 @@
                                              tools:context=".MainActivity">
 
     <EditText
-            android:id="@+id/numET"
+            android:id="@+id/results"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -37,11 +37,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.303"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/numET"/>
+            app:layout_constraintTop_toBottomOf="@+id/results"/>
 
 
     <TextView
-            android:id="@+id/resultsTV"
+            android:id="@+id/operat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
